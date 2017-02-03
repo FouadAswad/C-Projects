@@ -1,0 +1,226 @@
+Script started on Tue 14 Jun 2016 11:27:46 PM EDT
+aswad@charlie:~/Desktop$ cat ss[K[Kass5.c
+/*
+Fouad Aswad
+104357145
+Assignment 5
+This program takes an odd number as input and outputs a magic square to the order of the odd number inputted
+*/
+
+/*
+
+This program follows a set of rules to assign the correct numbers to the magic square at [i][j],
+these rules were estblished by Simon de la Loubère (1642-1729) and consist of the following:
+
+1. Assign the middle variable of the top most row to 1.(magic[0][n/2])
+2. From the place established by the first rule, go up a row and go right an element(i--,j++) in magic array
+3. If, after step 2, i < 0, set i to bottom most row of j coloumn and set that element of the magic array to the last number set + 1, otherwise go to step 4
+4. If, after step 2, j is more than or equal to n, where n is the order of the magic square, set j to leftmost coloumn(0) and assign that element the last number set +1
+5. If magic[i][j] arrives at an element that is already set, add 1 to the coloumn of the previously set element and set that element to the last element set + 1
+6. If i < 0 AND j >= n, where n is the order of the magic square, repeat sequence of actions for step 5.
+
+*/
+
+#include <stdio.h>
+#define bool int
+#define true 1
+#define false 0
+
+void create_magic_square(int n,int magic[99][99]);
+void print_magic_square(int n, int magic[99][99]);
+bool isodd(int n);
+
+int main(){
+    int n; //Variable to later hold order of magic array
+    int magic[99][99]= {0}; //Initializes all elements of magic to 0
+
+
+    printf("Enter order of odd magic square: ");//Prompt to enter n, where n will be the order
+
+    scanf(" %d", &n);//Assigns inputted number to n
+    if(isodd(n)){ //Checks if n is odd
+
+    printf("\n\n");//Enters 2 lines to format table
+
+    create_magic_square(n, magic); //Calls on create function to create the magic square
+
+    print_magic_square(n, magic);//Print function to print the magic square
+}    else{
+        printf("\nThis program only works with odd integers.");
+    }
+    return 0;
+}
+
+void create_magic_square(int n,int magic[99][99]){//Function to initialize magic square correct numbers at correct positions
+
+    //Program to create the magic square, takes an integer and a multidimensional array as parameters
+
+    int i,j,p;// 'i' variable is placeholder for row of multidimensional array
+              // 'j' variable is a placeholder for coloumn of multidimensional array
+              // 'p' variable is what the elements will =
+
+    i=0;//Start at row 0
+    j=n;//start at coloumn n(n is the order of the magic square)
+
+    magic[i][j/2] = 1;//Step 1
+    j /= 2;
+    for(p=2; p<=n*n; p++){//Step 2 //Keeps assigning elements until element equals inputted number squared
+        i--;
+        j++;
+        if(i<0 && j >=n){//Step 6
+                i+=2;
+
+                j--;
+
+            if(i<0){
+            i= n;
+            }else if(j>=n){
+            j=0;
+            }
+            if(magic[i][j]!= 0){
+            i+=2;
+
+            j--;
+            }
+        }
+        else{
+        if(i<0){//Step 3
+            i= n-1;
+        }else if(j>=n){//Step 4
+        j=0;
+        }
+        if(magic[i][j]!= 0){//Step 5
+            i+=2;
+
+            j--;
+        }
+        }
+
+        magic[i][j] = p;//Sets magic[i][j] to p(which is incremented by 1 until it reaches n squared
+    }
+
+
+}
+
+void print_magic_square(int n, int magic[99][99]){//Function to print the magic square created by previous function
+
+int i,j; //Counter variables
+
+for(i=0; i<n; i++){//Prints rows of magic
+        for(j=0; j<n; j++){//Prints coloumns of magic
+            printf("%d\t", magic[i][j]);
+
+        }
+        printf("\n");//adds a new line after every coloumn printed to resemble a table
+    }
+
+}
+
+bool isodd(int n){//Function to check whether an integer is odd
+
+
+if(n%2 != 0){return true;}      //If number is even, return false, otherwise, proceed
+else{
+    return false;
+}
+
+}
+aswad@charlie:~/Desktop$ gcc ass.5[K[K5.c
+ass5.c: In function ‘main’:
+ass5.c:33:5: warning: missing braces around initializer [-Wmissing-braces]
+     int magic[99][99]= {0}; //Initializes all elements of magic to 0
+     ^
+ass5.c:33:5: warning: (near initialization for ‘magic[0]’) [-Wmissing-braces]
+aswad@charlie:~/Desktop$ ./a.out
+Enter order of odd magic square: 5
+
+
+17	24	1	8	15	
+23	5	7	14	16	
+4	6	13	20	22	
+10	12	19	21	3	
+11	18	25	2	9	
+aswad@charlie:~/Desktop$ ls -
+ls: cannot access -: No such file or directory
+aswad@charlie:~/Desktop$ le -l
+bash: le: command not found
+aswad@charlie:~/Desktop$ ls -l
+total 225
+drwxr-xr-x 2 aswad temp     2 May 17 17:06 [0m[01;34m60-100[0m
+-rwxr-xr-x 1 aswad temp  6160 Jun 14 23:28 [01;32ma.out[0m
+-rw-r--r-- 1 aswad temp   790 May 18 13:08 ass1prb1.c
+-rw-r--r-- 1 aswad temp   669 May 17 11:34 ass1prb1.c~
+-rw-r--r-- 1 aswad temp   757 May 17 13:39 ass1prb2.c
+-rw-r--r-- 1 aswad temp   589 May 17 12:19 ass1prb2.c~
+-rw-r--r-- 1 aswad temp  2820 May 18 13:13 ass1prb2.txt
+-rw-r--r-- 1 aswad temp  2902 May 18 13:12 ass1prb.txt
+-rw-r--r-- 1 aswad temp   368 Jun  3 16:20 ass2.m
+-rw-r--r-- 1 aswad temp   412 Jun  3 14:01 ass2.m~
+-rw-r--r-- 1 aswad temp  2554 May 25 17:46 ass2prb1.c
+-rw-r--r-- 1 aswad temp  5171 May 25 17:49 ass2prb1.txt
+-rw-r--r-- 1 aswad temp   721 May 26 15:40 ass2prb2.c
+-rw-r--r-- 1 aswad temp   812 May 25 17:51 ass2prb2.c~
+-rw-r--r-- 1 aswad temp  3434 May 25 17:56 ass2prb2.txt
+-rw-r--r-- 1 aswad temp   347 Jun  3 16:20 ass2.x
+-rw-r--r-- 1 aswad temp   880 May 30 15:18 ass3p1.c
+-rw-r--r-- 1 aswad temp   407 May 30 15:12 ass3p1.c~
+-rw-r--r-- 1 aswad temp  4327 May 30 15:34 ass3p1.txt
+-rw-r--r-- 1 aswad temp  1890 May 30 14:59 ass3p2.c
+-rw-r--r-- 1 aswad temp  1377 May 30 14:55 ass3p2.c~
+-rw-r--r-- 1 aswad temp  5576 May 30 15:35 ass3p2.txt
+-rw-r--r-- 1 aswad temp   947 Jun  6 14:18 ass4p1.c
+-rw-r--r-- 1 aswad temp  4894 Jun  6 14:20 ass4p1.txt
+-rw-r--r-- 1 aswad temp   694 Jun  6 14:21 ass4p2.c
+-rw-r--r-- 1 aswad temp  5192 Jun  6 14:25 ass4p2.txt
+-rw-r--r-- 1 aswad temp  3841 Jun 14 23:26 ass5.c
+-rw-r--r-- 1 aswad temp     0 Jun 14 23:27 ass5.txt
+-rw-r--r-- 1 aswad temp   557 Jun  3 16:24 assignment2.txt
+-rw-r--r-- 1 aswad temp   880 May 28 09:36 #ctst1.m#
+-rw-r--r-- 1 aswad temp   902 May 28 09:35 ctst1.m
+-rw-r--r-- 1 aswad temp   395 May 27 23:54 ctst1.m~
+-rw-r--r-- 1 aswad temp  1209 May 28 09:35 ctst1.x
+-rwxr-xr-x 1 aswad temp  4932 May  9 13:22 [01;32mhelloworld[0m
+-rw-r--r-- 1 aswad temp    61 May  9 13:34 helloworld.c
+-rw-r--r-- 1 aswad temp    61 May  9 13:32 helloworld.c~
+-rwxr-xr-x 1 aswad temp  4932 May  9 13:24 [01;32mhellworld[0m
+-rw-r--r-- 1 aswad temp   822 May 16 13:16 Lab1problem1.c
+-rw-r--r-- 1 aswad temp   820 May  9 14:46 Lab1problem1.c~
+-rw-r--r-- 1 aswad temp  2507 May 16 14:03 Lab1problem1.txt
+-rw-r--r-- 1 aswad temp   502 May  9 15:53 Lab1problem2.c~
+-rw-r--r-- 1 aswad temp  6533 May 24 19:04 lab2prb1.txt
+-rw-r--r-- 1 aswad temp  2202 May 30 13:46 #lab2prob2.c#
+-rw-r--r-- 1 aswad temp  2202 May 16 21:26 lab2prob2.c
+-rw-r--r-- 1 aswad temp   151 May 16 19:59 lab2prob2.c~
+-rw-r--r-- 1 aswad temp  3654 May 16 21:54 lab2problem1.c
+-rw-r--r-- 1 aswad temp  1649 May 16 19:06 lab2problem1.c~
+-rw-r--r-- 1 aswad temp     0 May 17 11:20 lab2problem1.txt
+-rw-r--r-- 1 aswad temp  4493 May 24 19:05 lab2problem2.txt
+-rw-r--r-- 1 aswad temp  1652 May 30 15:26 lab3p1.c
+-rw-r--r-- 1 aswad temp  1174 May 30 14:55 lab3p1.c~
+-rw-r--r-- 1 aswad temp  4948 May 30 15:32 lab3p1.txt
+-rw-r--r-- 1 aswad temp  9099 May 30 15:31 lab3p2.c
+-rw-r--r-- 1 aswad temp  8976 May 30 14:55 lab3p2.c~
+-rw-r--r-- 1 aswad temp 12788 May 30 15:33 lab3p2.txt
+-rw-r--r-- 1 aswad temp   699 Jun  6 13:10 lab4p1.c
+-rw-r--r-- 1 aswad temp  1549 Jun  6 13:40 lab4p2.c
+-rw-r--r-- 1 aswad temp  1674 Jun  6 13:12 lab4p2.c~
+-rw-r--r-- 1 aswad temp  5723 Jun  6 14:14 lab4p2.txt
+-rw-r--r-- 1 aswad temp  1724 Jun 10 23:07 lab5.c
+-rw-r--r-- 1 aswad temp  6693 Jun 10 23:11 lab5.txt
+-rw-r--r-- 1 aswad temp  5933 Jun 13 13:22 LabTest1.txt
+-rw-r--r-- 1 aswad temp  1160 Jun 13 13:21 labtest.c
+-rw-r--r-- 1 aswad temp   807 Jun 13 13:49 labtestp2.c
+-rw-r--r-- 1 aswad temp  5361 Jun 13 13:50 LabTestP2.txt
+-rw-r--r-- 1 aswad temp   814 May 24 18:42 p1.m
+-rw-r--r-- 1 aswad temp   267 May 19 15:15 p1.m~
+-rw-r--r-- 1 aswad temp   855 May 24 18:47 p1.txt
+-rw-r--r-- 1 aswad temp   814 May 24 18:45 p1.txt~
+-rw-r--r-- 1 aswad temp    15 May 26 15:53 p1.x
+-rw-r--r-- 1 aswad temp    21 May 26 18:02 #test.m#
+-rw-r--r-- 1 aswad temp    78 May 17 12:40 test.m
+-rw-r--r-- 1 aswad temp    48 May 17 12:37 test.m~
+drwxr-xr-x 2 aswad temp     2 May 18 13:47 [01;34muntitled folder[0m
+aswad@charlie:~/Desktop$ exit
+exit
+
+Script done on Tue 14 Jun 2016 11:28:36 PM EDT
